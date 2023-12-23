@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',    
-    # 'portfolio.apps.PortfolioConfig',   # 앱 등록
-    'chat.apps.ChatConfig',
+
+    'board.apps.BoardConfig',
+    'chat.apps.ChatConfig',  # 앱 등록
 ]
 
 MIDDLEWARE = [
