@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 import pymysql
+
+load_dotenv()
 
 pymysql.version_info = (2, 2, 0, 'final', 0)    # (major, minor, micro, releaselevel, serial)
 pymysql.install_as_MySQLdb()
@@ -84,9 +88,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'classicmodels',
+        'NAME': "classicmodels",
         'USER': 'root',
-        'PASSWORD': '1q2w3e4r',
+        'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '3306',
     }

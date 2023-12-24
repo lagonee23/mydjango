@@ -25,9 +25,9 @@ class Choice(models.Model):
 
 # 사용자 메세지 내역
 class UserMessage(models.Model):
-    pass
+    title = models.CharField(max_length=50, null=True)
 
 
 # AI 답변 내역
 class AIMessage(models.Model):
-    pass
+    answer = models.TextField(null=True)
