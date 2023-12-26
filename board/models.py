@@ -3,7 +3,7 @@ from django.utils import timezone
     
 
 class Board(models.Model):
-    title = models.CharField(max_length=50, default='')
+    title = models.CharField(max_length=50, blank=True)
     writer = models.CharField(max_length=30, null=True)
     content = models.TextField(null=True)
     regdate = models.DateTimeField(auto_now=timezone.now)
