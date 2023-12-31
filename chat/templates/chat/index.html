@@ -1,9 +1,28 @@
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href={% url "chat:detail" question.id %}>{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+{% extends "chat/base.html" %}
+
+{% block title %}Wilson{% endblock  %}
+
+{% block main %}
+    <div class="contianer-fluid">
+        <div class="row">
+            <div class="col">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="text" name="message">
+                    <input type="submit" value="Send">
+                </form>
+            </div>
+            <div class="col">
+                {% if latest_question_list %}
+                <ul>
+                    {% for question in latest_question_list %}
+                        <li><a href={% url "chat:detail" question.id %}>{{ question.question_text }}</a></li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                <p>No polls are available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock  %}

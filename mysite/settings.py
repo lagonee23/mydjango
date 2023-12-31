@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',    
-
+    
     'board.apps.BoardConfig',
     'chat.apps.ChatConfig',  # 앱 등록
 ]
