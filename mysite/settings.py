@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',    
     
     'board.apps.BoardConfig',
-    'chat.apps.ChatConfig',  # 앱 등록
+    'minesweeper.apps.MinesweeperConfig',  # 앱 등록
 ]
 
 MIDDLEWARE = [

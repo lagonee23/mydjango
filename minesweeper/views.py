@@ -7,26 +7,26 @@ import os
 from .models import Choice, Question
 
 
-# /chat/
+# /minesweeper/
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     context = { "latest_question_list": latest_question_list }
-    return render(request, "chat/index.html", context)
+    return render(request, "minesweeper/index.html", context)
 
 
-# /chat/<int:question_id>/
+# /minesweeper/<int:question_id>/
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, "chat/detail.html", {'question': question})
+    return render(request, "minesweeper/detail.html", {'question': question})
 
 
-# /chat/<int:question_id>/results/
+# /minesweeper/<int:question_id>/results/
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, "chat/results.html", {"question": question})
+    return render(request, "minesweeper/results.html", {"question": question})
 
 
-# /chat/<int:question_id>/vote/
+# /minesweeper/<int:question_id>/vote/
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -35,7 +35,7 @@ def vote(request, question_id):
         # Redisplay the question voting form.
         return render(
             request,
-            "chat/detail.html",
+            "minesweeper/detail.html",
             {
                 "question": question,
                 "error_message": "You didn't select a choice.",
@@ -47,4 +47,4 @@ def vote(request, question_id):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        return HttpResponseRedirect(reverse("chat:results", args=(question.id,)))
+        return HttpResponseRedirect(reverse("minesweeper:results", args=(question.id,)))
