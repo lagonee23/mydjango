@@ -9,8 +9,24 @@ from .models import Choice, Question
 
 # /minesweeper/
 def index(request):
+    x_len, y_len = 10, 5    # 가로,세로 길이
+    polygons = []
+    for y in range(y_len):
+        for x in range(x_len - (y % 2)):
+            points = "{},{} {},{} {},{} {},{} {},{} {},{}".format(
+                10 + 7 * (y % 2) + 14 * x, 5 + 12 * y,
+                17 + 7 * (y % 2) + 14 * x, 9 + 12 * y,
+                17 + 7 * (y % 2) + 14 * x, 17 + 12 * y,
+                10 + 7 * (y % 2) + 14 * x, 21 + 12 * y,
+                3 + 7 * (y % 2) + 14 * x, 17 + 12 * y,
+                3 + 7 * (y % 2) + 14 * x, 9 + 12 * y
+            )
+            polygons.append(points)
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    context = { "latest_question_list": latest_question_list }
+    context = { 
+               "latest_question_list": latest_question_list,
+               "polygons": polygons,
+    }
     return render(request, "minesweeper/index.html", context)
 
 

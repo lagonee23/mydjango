@@ -1,28 +1,36 @@
 {% extends "minesweeper/base.html" %}
 
-{% block title %}Wilson{% endblock  %}
+{% block title %}Minesweeper{% endblock  %}
 
 {% block main %}
-    <div class="contianer-fluid">
-        <div class="row">
-            <div class="col">
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="text" name="message">
-                    <input type="submit" value="Send">
-                </form>
-            </div>
-            <div class="col">
-                {% if latest_question_list %}
-                <ul>
-                    {% for question in latest_question_list %}
-                        <li><a href={% url "minesweeper:detail" question.id %}>{{ question.question_text }}</a></li>
-                    {% endfor %}
-                    </ul>
-                {% else %}
-                <p>No polls are available.</p>
-                {% endif %}
-            </div>
+<div class="container-fluid">
+    <!-- 한 변의 길이는 8(7)으로 -->
+    <svg width="1000" height="500" viewBox="0 0 340 170">
+        {% for polygon in polygons %}
+        <polygon points="{{ polygon }}" style="fill:lightgrey;stroke:black;stroke-width:1" />
+        {% endfor %}
+    </svg>
+</div>
+<div class="contianer-fluid">
+    <div class="row">
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="message">
+                <input type="submit" value="Send">
+            </form>
+        </div>
+        <div class="col">
+            {% if latest_question_list %}
+            <ul>
+                {% for question in latest_question_list %}
+                    <li><a href={% url "minesweeper:detail" question.id %}>{{ question.question_text }}</a></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+            <p>No polls are available.</p>
+            {% endif %}
         </div>
     </div>
+</div>
 {% endblock  %}
