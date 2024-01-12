@@ -1,15 +1,18 @@
 {% extends "minesweeper/base.html" %}
+{% load static %}
 
 {% block title %}Minesweeper{% endblock  %}
 
 {% block main %}
 <div class="container-fluid">
     <!-- 한 변의 길이는 8(7)으로 -->
-    <svg width="1000" height="500" viewBox="0 0 340 170">
+    <svg id="board" width="1000" height="500" viewBox="0 0 340 170">
         {% for polygon in polygons %}
-        <polygon points="{{ polygon }}" style="fill:lightgrey;stroke:black;stroke-width:1" />
+        <polygon points="{{ polygon }}" style="fill:lightgrey;stroke:black;stroke-width:1" id="polygon{{ forloop.counter0 }}"/>
         {% endfor %}
     </svg>
+    <!-- 스크립트 파일 가져오기 -->
+    <script src="{% static 'minesweeper/js/game.js' %}"></script>
 </div>
 <div class="contianer-fluid">
     <div class="row">
