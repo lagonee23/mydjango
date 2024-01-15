@@ -19,11 +19,13 @@ def index(request):
                 3 + 7 * (y % 2) + 14 * x, 17 + 12 * y,
                 3 + 7 * (y % 2) + 14 * x, 9 + 12 * y
             )
-            polygons.append(points)
+            id = f"{x}-{y}"
+            polygons.append({"points":points, "id":id})
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     context = { 
                "latest_question_list": latest_question_list,
                "polygons": polygons,
+               "svg_id": f"{x_len}-{y_len}",
     }
     return render(request, "minesweeper/index.html", context)
 

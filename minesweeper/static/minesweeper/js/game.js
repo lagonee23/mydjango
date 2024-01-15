@@ -1,40 +1,77 @@
 const mineCount = 5;    // 지뢰 개수
-var gameStarted = false;    // 게임시작 여부
-var mines = new Set();
+let gameStarted = false;    // 게임시작 여부
+let mines = new Set();    // 지뢰에 해당하는 ID Set
+
+// 각 polygon의 넘버링, 혹은 지뢰 여부를 나타내는 객체
+let polygonObjs = {};
+let polygons = Array.from(document.querySelectorAll('polygon'));
+polygons.forEach((polygon) => {
+    polygonObjs[polygon.id] = 0;
+});
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    var polygons = document.querySelectorAll('polygon');
     polygons.forEach(function(polygon) {
-        // 마우스 커서가 해당 요소 위로 올라갔을 때 'polygon'의 채우기 색상을 흰색으로 바꿉니다.
-        polygon.addEventListener('mouseover', function() {
-            this.style.fill = 'white';
-        });
-        // 마우스 커서가 해당 요소에서 벗어났을 때 'polygon'의 채우기 색상을 연한 회색으로 바꿉니다.
-        polygon.addEventListener('mouseout', function() {
-            this.style.fill = 'lightgrey';
-        });
         polygon.addEventListener('click', function() {
             if (!gameStarted) {
                 gameStarted = true
                 let id = this.getAttribute('id');
-                placeMines(id);
+                placeMines(id);    // 지뢰를 정함
+                countMines();    // 각 polygon 인근의 지뢰 개수를 셈
             }
         });
     });
 });
 
 
-// polygon의 ID값을 랜덤으로 지정하여 'mines' Set에 추가하는 함수
+// 지뢰에 해당하는 polygon ID값을 랜덤으로 지정하는 함수
 function placeMines(excludeId) {
-    var polygons = document.querySelectorAll('polygon');
     while (mines.size < mineCount) {
         let randomPolygon = polygons[Math.floor(Math.random() * polygons.length)];
         if (randomPolygon.getAttribute('id') !== excludeId) {
             mines.add(randomPolygon.getAttribute('id'));
         }
     }
+    for (const mine of mines) {
+        delete polygonObjs[mine];    
+    }
 }
+
+
+// 주어진 id의 이웃하는 요소들의 id를 반환하는 함수
+function getNeighbors(id) {
+    const neighbors = [];
+    const [x_len, y_len] = document.querySelector(`[id^="board"]`).getAttribute('id').slice(5).split('-');
+    const [id_x, id_y] = id.split('-').map(Number);
+    x_y = [
+        [id_x-!(id_y%2), id_y-1], [id_x+(id_y%2), id_y-1], 
+        [id_x-1, id_y], [id_x+1, id_y], 
+        [id_x-!(id_y%2),id_y+1], [id_x+(id_y%2),id_y+1]
+    ];
+    for (const [x,y] of x_y) {
+        if (y>=0 && y<y_len && x>=0 && x<(x_len-(y%2))) {
+            neighbors.push(`${x}-${y}`);
+        }
+    }
+    return neighbors
+}
+
+
+// 각 polygon마다 주변 지뢰의 개수를 세어 `polygonObjs`에 정리
+function countMines() {
+    polygons.forEach(function(polygon) {
+        if (!mines.has(polygon.getAttribute('id'))) {
+            let neighbors = getNeighbors(polygon.getAttribute('id'));    // 인접한 polygon ID값들
+            for (const neighbor of neighbors) {
+                if (mines.has(neighbor)) {
+                    polygonObjs[polygon.getAttribute('id')]++;
+                }
+            }
+        }
+    });
+}
+
+
 
 // const board = document.getElementById("board");
 

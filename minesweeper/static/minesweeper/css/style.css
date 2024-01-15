@@ -1,0 +1,9 @@
+polygon {
+    fill: lightgrey;
+    stroke:black;
+    stroke-width:1;
+}
+
+polygon:hover {
+    fill: white;
+}
