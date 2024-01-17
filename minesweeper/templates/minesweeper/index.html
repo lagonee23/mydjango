@@ -8,7 +8,7 @@
     <!-- 한 변의 길이는 8(7)으로 -->
     <svg id="board{{ svg_id }}" width="1000" height="500" viewBox="0 0 340 170">
         {% for polygon in polygons %}
-        <polygon points = "{{ polygon.points }}" id="{{ polygon.id }}"/>
+        <polygon points = "{{ polygon.points }}" id="{{ polygon.polygon_id }}"/>
         {% endfor %}
     </svg>
     <!-- 스크립트 파일 가져오기 -->

@@ -19,8 +19,8 @@ def index(request):
                 3 + 7 * (y % 2) + 14 * x, 17 + 12 * y,
                 3 + 7 * (y % 2) + 14 * x, 9 + 12 * y
             )
-            id = f"{x}-{y}"
-            polygons.append({"points":points, "id":id})
+            polygon_id = f"{x}-{y}"
+            polygons.append({"points":points, "polygon_id":polygon_id})
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     context = { 
                "latest_question_list": latest_question_list,
