@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         // 우클릭 이벤트 추가
         polygon.addEventListener('contextmenu', function(event) {
-            event.preventDefault();
-            drawFlag(this);
+            event.preventDefault();    // 기본 우클릭 이벤트를 막음
+            toggleFlag(this);    // 깃발 표시 혹은 제거
         });
     });
 });
@@ -129,13 +129,32 @@ function displayNum(board, xy, num) {
 
 
 // 깃발을 그리는 함수
-function drawFlag(polygon) {
-    let board = document.querySelector(`[id^="board"]`);
-    let polygonPoints = polygon.getAttribute("points").split(" ");
-    let polygonXY = calculateCenter(polygonPoints);
-    const flagElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    // flagElement.setAttribute("d", "M" + (polygonXY.x-2) + " " + (polygonXY.y-4) + " l 4 0 l -2 4 z");
-    // flagElement.setAttribute("fill", "red");
-    // board.appendChild(flagElement);
-    console.log(polygonXY);
+function toggleFlag(polygon) {    
+    const flagId = 'flag' + polygon.id;
+    let existingFlag = document.getElementById(flagId);
+    if (existingFlag) {
+        // 이미 깃발이 있다면 제거
+        existingFlag.remove();
+    } else {
+        // 깃발이 없다면 추가
+        let polygonCenter = calculateCenter(polygon.getAttribute("points").split(" "));
+        const board = document.querySelector(`[id^="board"]`);
+        const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        textElement.setAttribute("x", polygonCenter.x);
+        textElement.setAttribute("y", polygonCenter.y);
+        textElement.setAttribute("text-anchor", "middle");
+        textElement.setAttribute("dominant-baseline", "central");
+        textElement.setAttribute("fill", "black");
+        textElement.setAttribute("font-size", "8px");
+        textElement.setAttribute("font-family", "Arial, Helvetica, sans-serif");
+        textElement.setAttribute("id", flagId);
+        textElement.textContent = "🚩"; 
+
+        // 깃발 아이콘에 대한 우클릭 이벤트 핸들러를 추가
+        textElement.addEventListener('contextmenu', function(event) {
+            event.preventDefault(); 
+            toggleFlag(polygon);
+        });
+        board.appendChild(textElement);
+    }
 }
