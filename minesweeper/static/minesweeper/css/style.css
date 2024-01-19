@@ -1,9 +1,14 @@
 polygon {
-    fill: lightgrey;
-    stroke:black;
+    fill: gold;
+    stroke: peru;
     stroke-width:0.7;
 }
 
 polygon:hover {
-    fill: white;
+    fill: lemonchiffon;
 }
+
+polygon[style*="fill: peru"] {
+    pointer-events: none;
+}
+
