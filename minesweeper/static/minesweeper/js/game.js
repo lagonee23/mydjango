@@ -1,7 +1,9 @@
-const mineCount = 4;    // 지뢰 개수
+const mineCount = 5;    // 지뢰 개수
 let gameState = "notStarted";   // 게임 상태(notStarted, ongoing, ended 중 하나)
 let mines = new Set();    // 지뢰에 해당하는 ID Set
 let flags = new Set();   // 깃발이 있는 polygon의 ID Set
+
+const board = document.querySelector(`[id^="board"]`);    // 'board'로 시작하는 요소(=svg 요소)
 
 // 각 polygon의 넘버링, 혹은 지뢰 여부를 나타내는 객체
 let polygonObjs = {};
@@ -18,6 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     svgElement.addEventListener('contextmenu', function(event) {
         event.preventDefault();
     });
+    // SVG 요소에 대해 드래그를 못하게 합니다.
+    svgElement.addEventListener('mousedown', function(event) {
+        event.preventDefault();
+    });
 
     polygons.forEach(function(polygon) {
         polygon.addEventListener('click', function() {
@@ -27,11 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 placeMines(id);    // 지뢰를 정함
                 countMines();    // 각 polygon 근처의 지뢰의 개수를 셉니다.
             }
-            if (gameState === "ongoing") {
+            if (gameState === "ongoing" && !flags.has(this.id)) {
                 revealPolygon(this);
             }
         });
-        // 우클릭 이벤트 추가
+        // polygon 태그에 우클릭 이벤트 추가
         polygon.addEventListener('contextmenu', function(event) {
             if (gameState === "ongoing") {
                 toggleFlag(this);    // 깃발 표시 혹은 제거
@@ -73,7 +79,7 @@ function countMines() {
 // 이웃하는 polygon들의 id값을 반환하는 함수
 function getNeighbors(id) {
     const neighbors = [];
-    const [x_len, y_len] = document.querySelector(`[id^="board"]`).getAttribute('id').slice(5).split('-');
+    const [x_len, y_len] = board.getAttribute('id').slice(5).split('-');
     const [id_x, id_y] = id.split('-').map(Number);
     x_y = [
         [id_x-!(id_y%2), id_y-1], [id_x+(id_y%2), id_y-1], 
@@ -94,11 +100,20 @@ function revealPolygon(polygon) {
     polygon.parentNode.appendChild(polygon);    // 가장 위 계층으로 옮기기
     polygon.style.fill = 'peru';
     polygon.style.stroke = 'sienna';
+
     if (mines.has(polygon.id)) {
         // polygon에 지뢰가 있는 경우
         displayAllMines(polygon, "/static/minesweeper/images/bee.png");
+        // 지뢰가 없는 곳에 깃발이 있는 경우 'X'를 표시
+        flags.forEach((flag) => {
+            if (!mines.has(flag)) {
+                let flagElement = document.getElementById('flag' + flag);
+                if (flagElement) flagElement.remove();
+                displayX(document.getElementById(flag));
+            }
+        });
         gameState = "ended";  // 게임 상태를 종료로 변경
-        // return ;
+        return ;
     } else if(polygonObjs[polygon.id]==0) {
         delete polygonObjs[polygon.id];
         let neighbors = getNeighbors(polygon.id).filter(id => polygonObjs.hasOwnProperty(id));    // 인접한 polygon들의 ID 배열
@@ -107,11 +122,10 @@ function revealPolygon(polygon) {
             revealPolygon(neighborPolygon);
         });
     } else {    
-        const board = document.querySelector(`[id^="board"]`);
         let polygonPoints = polygon.getAttribute("points").split(" ");
         let polygonXY = calculateCenter(polygonPoints);
         let polygonNum = polygonObjs[polygon.id];
-        displayNum(board, polygonXY, polygonNum);
+        displayNum(polygonXY, polygonNum);
     }
 }
 
@@ -130,15 +144,16 @@ function calculateCenter(points) {
 
 
 // 인근 지뢰 개수를 표시해주는 함수
-function displayNum(board, xy, num) {
-    const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    textElement.setAttribute("x", xy.x);
-    textElement.setAttribute("y", xy.y+3);
-    textElement.setAttribute("text-anchor", "middle");
-    textElement.setAttribute("fill", "white");
-    textElement.setAttribute("font-size", "8px");
-    textElement.textContent = num;
-    board.appendChild(textElement);
+function displayNum(xy, num) {
+    const numElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    numElement.setAttribute("x", xy.x);
+    numElement.setAttribute("y", xy.y-1);
+    numElement.setAttribute("text-anchor", "middle");
+    numElement.setAttribute("dominant-baseline", "central");
+    numElement.setAttribute("fill", "white");
+    numElement.setAttribute("font-size", "8px");
+    numElement.textContent = num;
+    board.appendChild(numElement);
 }
 
 
@@ -149,35 +164,34 @@ function toggleFlag(polygon) {
     if (existingFlag) {
         flags.delete(polygon.id);
         existingFlag.remove();
+        
     } else {
         flags.add(polygon.id);    // 'flag' Set에 polygon ID값을 추가
         let polygonCenter = calculateCenter(polygon.getAttribute("points").split(" "));
-        const board = document.querySelector(`[id^="board"]`);
-        const textElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        textElement.setAttribute("x", polygonCenter.x);
-        textElement.setAttribute("y", polygonCenter.y);
-        textElement.setAttribute("text-anchor", "middle");
-        textElement.setAttribute("dominant-baseline", "central");
-        textElement.setAttribute("font-size", "8px");
-        textElement.setAttribute("font-family", "Arial, Helvetica, sans-serif");
-        textElement.setAttribute("id", flagId);
-        textElement.textContent = "🚩"; 
+        const flagElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        flagElement.setAttribute("x", polygonCenter.x);
+        flagElement.setAttribute("y", polygonCenter.y);
+        flagElement.setAttribute("text-anchor", "middle");
+        flagElement.setAttribute("dominant-baseline", "central");
+        flagElement.setAttribute("font-size", "8px");
+        flagElement.setAttribute("font-family", "Arial, Helvetica, sans-serif");
+        flagElement.setAttribute("id", flagId);
+        flagElement.textContent = "🚩"; 
 
         // 깃발 아이콘에 대한 우클릭 이벤트 핸들러를 추가
-        textElement.addEventListener('contextmenu', function(event) {
+        flagElement.addEventListener('contextmenu', function(event) {
             if (gameState === "ongoing") {
                 toggleFlag(polygon);
             }
         });
 
-        board.appendChild(textElement);
+        board.appendChild(flagElement);
     }
 }
 
 
 // 지뢰를 표시하는 함수
 function displayMine(polygon, imgURL) {
-    const board = document.querySelector(`[id^="board"]`);
     const imageElement = document.createElementNS("http://www.w3.org/2000/svg", "image");
     let polygonCenter = calculateCenter(polygon.getAttribute("points").split(" "));
     imageElement.setAttribute("x", polygonCenter.x - 5);
@@ -193,7 +207,25 @@ function displayMine(polygon, imgURL) {
 function displayAllMines(polygon, imgURL) {
     polygon.style.fill = 'orangered';
     mines.forEach((mine) => {
-        let allPolygon = document.getElementById(mine);
-        displayMine(allPolygon, imgURL);
+        let minePolygon = document.getElementById(mine);
+        if (!flags.has(mine)) {
+            displayMine(minePolygon, imgURL);
+        }
     });
+}
+
+
+// 'X'를 표시하는 함수
+function displayX(polygon) {
+    const xElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    let polygonCenter = calculateCenter(polygon.getAttribute("points").split(" "));
+    xElement.setAttribute("x", polygonCenter.x);
+    xElement.setAttribute("y", polygonCenter.y);
+    xElement.setAttribute("text-anchor", "middle");
+    xElement.setAttribute("dominant-baseline", "central");
+    xElement.setAttribute("font-size", "8px");
+    xElement.setAttribute("fill", "red");
+    xElement.setAttribute("font-family", "Arial, Helvetica, sans-serif");
+    xElement.textContent = "X"; 
+    board.appendChild(xElement);
 }
