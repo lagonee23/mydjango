@@ -1,7 +1,8 @@
-const mineCount = 5;    // 지뢰 개수
+const mineCount = 6;    // 지뢰 개수
 let gameState = "notStarted";   // 게임 상태(notStarted, ongoing, ended 중 하나)
 let mines = new Set();    // 지뢰에 해당하는 ID Set
 let flags = new Set();   // 깃발이 있는 polygon의 ID Set
+let clickedPolygons = new Set(); // 클릭된 polygon의 id를 저장하는 Set 객체
 
 const board = document.querySelector(`[id^="board"]`);    // 'board'로 시작하는 요소(=svg 요소)
 
@@ -14,7 +15,6 @@ polygons.forEach((polygon) => {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-
     // SVG 요소에 대해 브라우저의 기본 우클릭 이벤트를 막습니다.
     let svgElement = document.querySelector('svg');
     svgElement.addEventListener('contextmenu', function(event) {
@@ -35,6 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             if (gameState === "ongoing" && !flags.has(this.id)) {
                 revealPolygon(this);
+                // 모든 polygon이 클릭되었는지 확인하고, 그렇다면 게임 종료
+                if (Object.keys(polygonObjs).every(id => clickedPolygons.has(id))) {
+                    gameState = "ended";
+                    polygons.forEach((polygon) => {
+                        polygon.classList.add('game-ended');
+                    });
+                    console.log("Game over");
+                }
             }
         });
         // polygon 태그에 우클릭 이벤트 추가
@@ -91,7 +99,7 @@ function getNeighbors(id) {
             neighbors.push(`${x}-${y}`);
         }
     }
-    return neighbors
+    return neighbors;
 }
 
 
@@ -112,20 +120,28 @@ function revealPolygon(polygon) {
                 displayX(document.getElementById(flag));
             }
         });
+        // 게임이 끝났을 때 모든 polygon에 'game-ended' 클래스 추가
+        polygons.forEach((polygon) => {
+            polygon.classList.add('game-ended');
+        });
         gameState = "ended";  // 게임 상태를 종료로 변경
-        return ;
+        console.log("Game over");
     } else if(polygonObjs[polygon.id]==0) {
-        delete polygonObjs[polygon.id];
-        let neighbors = getNeighbors(polygon.id).filter(id => polygonObjs.hasOwnProperty(id));    // 인접한 polygon들의 ID 배열
+        // polygon에 지뢰가 없고, 주변에도 없는 경우
+        // delete polygonObjs[polygon.id];
+        clickedPolygons.add(polygon.id);
+        let neighbors = getNeighbors(polygon.id).filter(id => !clickedPolygons.has(id) && !flags.has(id));    // 인접한 polygon들의 ID 배열
         let neighborPolygons = polygons.filter(polygon => neighbors.includes(polygon.getAttribute('id')));
         neighborPolygons.forEach(function(neighborPolygon) {
             revealPolygon(neighborPolygon);
         });
-    } else {    
+    } else {
+        // polygon에 지뢰가 없고, 주변에 1개이상 있는 경우
         let polygonPoints = polygon.getAttribute("points").split(" ");
         let polygonXY = calculateCenter(polygonPoints);
         let polygonNum = polygonObjs[polygon.id];
         displayNum(polygonXY, polygonNum);
+        clickedPolygons.add(polygon.id);
     }
 }
 
@@ -164,7 +180,6 @@ function toggleFlag(polygon) {
     if (existingFlag) {
         flags.delete(polygon.id);
         existingFlag.remove();
-        
     } else {
         flags.add(polygon.id);    // 'flag' Set에 polygon ID값을 추가
         let polygonCenter = calculateCenter(polygon.getAttribute("points").split(" "));
