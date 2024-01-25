@@ -1,8 +1,9 @@
-const mineCount = 6;    // 지뢰 개수
-let gameState = "notStarted";   // 게임 상태(notStarted, ongoing, ended 중 하나)
-let mines = new Set();    // 지뢰에 해당하는 ID Set
-let flags = new Set();   // 깃발이 있는 polygon의 ID Set
-let clickedPolygons = new Set(); // 클릭된 polygon의 id를 저장하는 Set 객체
+const mineCount = 6;                        // 지뢰 개수
+let gameState = "notStarted";               // 게임 상태(notStarted, ongoing, ended 중 하나)
+let mines = new Set();                      // 지뢰에 해당하는 ID Set
+let flags = new Set();                      // 깃발이 있는 polygon의 ID Set
+let clickedPolygons = new Set();            // 클릭된 polygon의 id를 저장하는 Set 객체
+let leftDown = false, rightDown = false;    // 좌우 마우스 버튼 상태
 
 const board = document.querySelector(`[id^="board"]`);    // 'board'로 시작하는 요소(=svg 요소)
 
@@ -15,15 +16,10 @@ polygons.forEach((polygon) => {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    // SVG 요소에 대해 브라우저의 기본 우클릭 이벤트를 막습니다.
+    // SVG 요소에 대해 브라우저의 기본 우클릭 이벤트와 드래그를 막습니다.
     let svgElement = document.querySelector('svg');
-    svgElement.addEventListener('contextmenu', function(event) {
-        event.preventDefault();
-    });
-    // SVG 요소에 대해 드래그를 못하게 합니다.
-    svgElement.addEventListener('mousedown', function(event) {
-        event.preventDefault();
-    });
+    svgElement.addEventListener('contextmenu', event => event.preventDefault());
+    svgElement.addEventListener('mousedown', event => event.preventDefault());
 
     polygons.forEach(function(polygon) {
         polygon.addEventListener('click', function() {
@@ -33,39 +29,52 @@ document.addEventListener('DOMContentLoaded', function() {
                 placeMines(id);    // 지뢰를 정함
                 countMines();    // 각 polygon 근처의 지뢰의 개수를 셉니다.
             }
-            if (gameState === "ongoing" && !flags.has(this.id)) {
+            if (gameState === "ongoing" && !flags.has(this.id) && !clickedPolygons.has(this.id)) {
                 revealPolygon(this);
-                // 모든 polygon이 클릭되었는지 확인하고, 그렇다면 게임 종료
-                if (Object.keys(polygonObjs).every(id => clickedPolygons.has(id))) {
-                    gameState = "ended";
-                    polygons.forEach((polygon) => {
-                        polygon.classList.add('game-ended');
-                    });
-                    console.log("Game over");
-                }
+            } 
+            // 모든 polygon이 클릭되었는지 확인하고, 그렇다면 게임 종료
+            if (Object.keys(polygonObjs).every(id => clickedPolygons.has(id))) {
+                polygons.forEach((polygon) => {
+                    polygon.classList.add('game-ended');
+                });
+                gameState = "ended";
+                console.log("Game over");
+                // 지뢰가 있는데 아직 깃발이 없는 polygon에 깃발 표시
+                mines.forEach((mine) => {
+                    if (!flags.has(mine)) toggleFlag(document.getElementById(mine));
+                });
             }
         });
+
         // polygon 태그에 우클릭 이벤트 추가
         polygon.addEventListener('contextmenu', function(event) {
-            if (gameState === "ongoing") {
-                toggleFlag(this);    // 깃발 표시 혹은 제거
-            }
+            if (gameState === "ongoing" && !clickedPolygons.has(this.id)) toggleFlag(this);    // 깃발 표시 혹은 제거
         });
-    });
+
+        // polygon을 좌클릭 우클릭 동시에 눌렀을 경우 발생하는 이벤트
+        polygon.addEventListener('mousedown', function(event) {
+            leftRightMouseDown(event, this);
+        });
+        polygon.addEventListener('mouseup', function(event) {
+            if (gameState==="ongoing" && leftDown && rightDown) leftRightMouseUp(this);
+        });
+        
+        //
+        polygon.addEventListener('mouseout', function(event) {
+            if (gameState==="ongoing" && leftDown && rightDown) leftRightMouseUp(this);
+        });
 });
+});
+
 
 
 // 지뢰에 해당하는 polygon ID값을 랜덤으로 지정하여 'mines'에 저장하는 함수
 function placeMines(excludeId) {
     while (mines.size < mineCount) {
         let randomPolygon = polygons[Math.floor(Math.random() * polygons.length)];
-        if (randomPolygon.getAttribute('id') !== excludeId) {
-            mines.add(randomPolygon.getAttribute('id'));
-        }
+        if (randomPolygon.getAttribute('id') !== excludeId) mines.add(randomPolygon.getAttribute('id'));
     }
-    for (const mine of mines) {
-        delete polygonObjs[mine];    
-    }
+    for (const mine of mines) delete polygonObjs[mine];    
 }
 
 
@@ -75,9 +84,7 @@ function countMines() {
         if (!mines.has(polygon.getAttribute('id'))) {
             let neighbors = getNeighbors(polygon.getAttribute('id'));    // 인접한 polygon ID값들
             for (const neighbor of neighbors) {
-                if (mines.has(neighbor)) {
-                    polygonObjs[polygon.getAttribute('id')]++;
-                }
+                if (mines.has(neighbor)) polygonObjs[polygon.getAttribute('id')]++;
             }
         }
     });
@@ -108,7 +115,7 @@ function revealPolygon(polygon) {
     polygon.parentNode.appendChild(polygon);    // 가장 위 계층으로 옮기기
     polygon.style.fill = 'peru';
     polygon.style.stroke = 'sienna';
-
+    
     if (mines.has(polygon.id)) {
         // polygon에 지뢰가 있는 경우
         displayAllMines(polygon, "/static/minesweeper/images/bee.png");
@@ -128,7 +135,6 @@ function revealPolygon(polygon) {
         console.log("Game over");
     } else if(polygonObjs[polygon.id]==0) {
         // polygon에 지뢰가 없고, 주변에도 없는 경우
-        // delete polygonObjs[polygon.id];
         clickedPolygons.add(polygon.id);
         let neighbors = getNeighbors(polygon.id).filter(id => !clickedPolygons.has(id) && !flags.has(id));    // 인접한 polygon들의 ID 배열
         let neighborPolygons = polygons.filter(polygon => neighbors.includes(polygon.getAttribute('id')));
@@ -140,7 +146,7 @@ function revealPolygon(polygon) {
         let polygonPoints = polygon.getAttribute("points").split(" ");
         let polygonXY = calculateCenter(polygonPoints);
         let polygonNum = polygonObjs[polygon.id];
-        displayNum(polygonXY, polygonNum);
+        displayNum(polygon, polygonXY, polygonNum);
         clickedPolygons.add(polygon.id);
     }
 }
@@ -151,16 +157,16 @@ function calculateCenter(points) {
     let sumX = 0;
     let sumY = 0;
     for (const point of points) {
-      const [x, y] = point.split(",").map(Number);
-      sumX += x;
-      sumY += y;
+        const [x, y] = point.split(",").map(Number);
+        sumX += x;
+        sumY += y;
     }
     return { x: sumX/points.length, y: sumY/points.length };
 }
 
 
 // 인근 지뢰 개수를 표시해주는 함수
-function displayNum(xy, num) {
+function displayNum(polygon, xy, num) {
     const numElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
     numElement.setAttribute("x", xy.x);
     numElement.setAttribute("y", xy.y-1);
@@ -170,6 +176,13 @@ function displayNum(xy, num) {
     numElement.setAttribute("font-size", "8px");
     numElement.textContent = num;
     board.appendChild(numElement);
+    
+    numElement.addEventListener('mousedown', function(event) {
+        leftRightMouseDown(event, polygon);
+    });
+    numElement.addEventListener('mouseup', function(event) {
+        leftRightMouseUp(polygon);
+    });
 }
 
 
@@ -192,14 +205,12 @@ function toggleFlag(polygon) {
         flagElement.setAttribute("font-family", "Arial, Helvetica, sans-serif");
         flagElement.setAttribute("id", flagId);
         flagElement.textContent = "🚩"; 
-
+        
         // 깃발 아이콘에 대한 우클릭 이벤트 핸들러를 추가
         flagElement.addEventListener('contextmenu', function(event) {
-            if (gameState === "ongoing") {
-                toggleFlag(polygon);
-            }
+            if (gameState === "ongoing") toggleFlag(polygon);
         });
-
+        
         board.appendChild(flagElement);
     }
 }
@@ -223,9 +234,7 @@ function displayAllMines(polygon, imgURL) {
     polygon.style.fill = 'orangered';
     mines.forEach((mine) => {
         let minePolygon = document.getElementById(mine);
-        if (!flags.has(mine)) {
-            displayMine(minePolygon, imgURL);
-        }
+        if (!flags.has(mine)) displayMine(minePolygon, imgURL);
     });
 }
 
@@ -243,4 +252,67 @@ function displayX(polygon) {
     xElement.setAttribute("font-family", "Arial, Helvetica, sans-serif");
     xElement.textContent = "X"; 
     board.appendChild(xElement);
+}
+
+
+/** 인접한 polyogon들의 깃발 개수를 반환 */
+function countFlags(id) {
+    let neighbors = getNeighbors(id);
+    let count = 0;
+    for (const neighbor of neighbors) {
+        if (flags.has(neighbor)) count++;
+    }
+    return count;
+}
+
+
+/** 마우스의 좌우 버튼을 동시에 클릭시 실행되는 함수 */
+function leftRightMouseDown(event, polygon) {
+    const id = polygon.getAttribute('id');
+    if (clickedPolygons.has(id) && gameState==="ongoing" && polygonObjs[id]!==0) {
+        if (event.button === 0) leftDown = true;
+        else if (event.button === 2) rightDown = true;
+        
+        if (leftDown && rightDown) {
+            let neighbors = getNeighbors(id).filter(neighbor => !clickedPolygons.has(neighbor) && !flags.has(neighbor));
+            let neighborPolygons = polygons.filter(polygon => neighbors.includes(polygon.getAttribute('id')));
+            if (polygonObjs[id] === countFlags(id)) {
+                // 오답, 정답을 가리는 경우
+                neighborPolygons.forEach(function(neighborPolygon) {
+                    revealPolygon(neighborPolygon);
+                });
+                // 모든 polygon이 클릭되었는지 확인하고, 그렇다면 게임 종료
+                if (Object.keys(polygonObjs).every(id => clickedPolygons.has(id))) {
+                    polygons.forEach((polygon) => {
+                        polygon.classList.add('game-ended');
+                    });
+                    gameState = "ended";
+                    console.log("Game over");
+                    // 지뢰가 있는데 아직 깃발이 없는 polygon에 깃발 표시
+                    mines.forEach((mine) => {
+                        if (!flags.has(mine)) toggleFlag(document.getElementById(mine));
+                    });
+                }
+            } else {
+                // 아무 일도 일어나지 않는 경우
+                neighborPolygons.forEach(function(neighborPolygon) {
+                    neighborPolygon.classList.add('highlight');
+                });
+            }
+        }
+    }
+}
+
+
+/** 마우스의 좌우 버튼을 뗄 경우 실행되는 함수 */
+function leftRightMouseUp(polygon) {
+    leftDown = false;
+    rightDown = false;
+
+    // 인접한 polygon들의 색깔 원상복구
+    let neighbors = getNeighbors(polygon.getAttribute('id'));
+    let neighborPolygons = polygons.filter(polygon => neighbors.includes(polygon.getAttribute('id')));
+    neighborPolygons.forEach(function(neighborPolygon) {
+        neighborPolygon.classList.remove('highlight');
+    });
 }

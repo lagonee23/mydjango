@@ -8,10 +8,6 @@ polygon:hover {
     fill: lemonchiffon;
 }
 
-polygon[style*="fill: peru"] {
-    pointer-events: none;
-}
-
 polygon.game-ended {
     pointer-events: none;
 }
@@ -20,3 +16,6 @@ svg text {
     cursor: default;
 }
 
+.highlight {
+    fill: lemonchiffon;
+}

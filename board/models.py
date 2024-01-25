@@ -1,12 +1,11 @@
 from django.db import models
-from django.utils import timezone
     
 
 class Board(models.Model):
-    title = models.CharField(max_length=50, blank=True)
+    title = models.CharField(max_length=50, blank=True, unique=True)
     writer = models.CharField(max_length=30, null=True)
     content = models.TextField(null=True)
-    regdate = models.DateTimeField(auto_now=timezone.now)
+    regdate = models.DateTimeField(auto_now_add=True)
     readcount = models.IntegerField(default=0)
     
     def __str__(self) -> str:

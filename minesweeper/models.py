@@ -20,14 +20,4 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
     
     def __str__(self):
-        return self.choice_text
-    
-
-# 사용자 메세지 내역
-class UserMessage(models.Model):
-    title = models.CharField(max_length=50, null=True)
-
-
-# AI 답변 내역
-class AIMessage(models.Model):
-    answer = models.TextField(null=True)
+        return self.choice_textpython
