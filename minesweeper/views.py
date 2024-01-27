@@ -7,7 +7,7 @@ from .models import Choice, Question
 
 # /minesweeper/
 def index(request):
-    x_len, y_len = 7, 5    # 가로,세로 길이
+    x_len, y_len = 10, 7    # 가로,세로 길이
     polygons = []
     for y in range(y_len):
         for x in range(x_len - (y % 2)):
