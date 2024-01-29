@@ -6,7 +6,7 @@ const gameStatusObj = {
     ENDED: "ended"
 }
 
-const mineCount = 10;                          // 게임 내 지뢰 총 개수
+const mineCount = 20;                          // 게임 내 지뢰 총 개수
 let gameStatus = gameStatusObj.NOT_STARTED;    // 현재 게임 상태
 let mines = new Set();                         // 지뢰가 있는 곳의 ID Set
 let flags = new Set();                         // 깃발이 있는 곳의 ID Set
@@ -28,6 +28,7 @@ polygons.forEach((polygon) => {
 //#endregion
 
 
+
 //#region 리스너
 document.addEventListener('DOMContentLoaded', function() {
     // SVG 요소에 대해 브라우저의 기본 우클릭 이벤트와 드래그를 막습니다.
@@ -46,7 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+document.getElementById('resetButton').addEventListener('click', resetGame);
 //#endregion
+
 
 
 //#region 함수
@@ -303,6 +308,30 @@ function placeMines(excludeId) {
 }
 
 
+/** 게임을 리셋합니다. */
+function resetGame() {
+    // 각 text와 image 요소를 삭제합니다.
+    let textElements = Array.from(board.getElementsByTagName('text'));
+    let imageElements = Array.from(board.getElementsByTagName('image'));
+    for (let i = 0; i < textElements.length; i++) board.removeChild(textElements[i])    
+    for (let i = 0; i < imageElements.length; i++) board.removeChild(imageElements[i]);
+
+    polygons.forEach(function(polygon) {
+        polygon.style.fill = 'gold';
+        polygon.style.stroke = 'peru';
+        polygon.classList.remove('game-ended');
+    });
+   
+    // 변수 초기화
+    gameStatus = gameStatusObj.NOT_STARTED;
+    mines.clear();
+    flags.clear();
+    clickedPolygons.clear();
+    polygonObjs = {};
+    polygons.forEach((polygon) => { polygonObjs[polygon.id] = 0; });
+}
+
+
 /** 
  * polygon을 공개할 경우 발생하는 이벤트에 관한 함수
  * 
@@ -334,13 +363,13 @@ function revealPolygon(polygon) {
             revealPolygon(neighborPolygon);
         });
     // 지뢰가 없고, 주변에 1개이상 있는 경우
-    } else {
-        clickedPolygons.add(polygon.id);
-        let polygonPoints = polygon.getAttribute("points").split(" ");
-        let polygonXY = calculateCenter(polygonPoints);
-        let polygonNum = polygonObjs[polygon.id];
-        displayNum(polygon, polygonXY, polygonNum);
-    }
+} else {
+    clickedPolygons.add(polygon.id);
+    let polygonPoints = polygon.getAttribute("points").split(" ");
+    let polygonXY = calculateCenter(polygonPoints);
+    let polygonNum = polygonObjs[polygon.id];
+    displayNum(polygon, polygonXY, polygonNum);
+}
 }
 
 
@@ -354,7 +383,7 @@ function rightClick() {
  * 깃발을 추가 혹은 제거합니다.
  * 
  * @param {Element} polygon 깃발을 추가하거나 제거할 polygon 요소.
- */
+*/
 function toggleFlag(polygon) {    
     const flagId = 'flag' + polygon.id;
     let existingFlag = document.getElementById(flagId);

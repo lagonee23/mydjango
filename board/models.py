@@ -9,7 +9,7 @@ class Board(models.Model):
     readcount = models.IntegerField(default=0)
     
     def __str__(self) -> str:
-        return f'{self.title}, {self.writer}({self.readcount})'
+        return f'{self.title}, {self.writer}({self.readcount})...이것은 str의 결과!'
     
     def incrementReadCount(self):
         self.readcount += 1
