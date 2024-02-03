@@ -1,6 +1,7 @@
 {% extends "board/base.html" %}
 {% block title %}수정{% endblock  %}
 {% block content %}
+{{ form.errors }}
 <form method='post'>
     {% csrf_token %}
     <input type="hidden" name="writer" value="{{ board.writer }}">
@@ -8,19 +9,19 @@
         <tr>
             <th>Title</th>
             <td>
-                <input type="text" name="title" value="{{ board.writer }}">
+                {{ form.title }}[{{ form.title.errors }}]
             </td>
         </tr>
         <tr>
             <th>Writer</th>
             <td>
-                <input type="text" name="writer" value="{{ board.writer }}" disabled>
+                {{ form.writer }}[{{ form.writer.errors }}]
             </td>
         </tr>
         <tr>
             <th>Content</th>
             <td>
-                <textarea name="content">{{ board.content }}</textarea>
+                {{ form.content }}[{{ form.content.errors }}]
             </td>
         </tr>
     </table>

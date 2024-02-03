@@ -6,7 +6,7 @@ const gameStatusObj = {
     ENDED: "ended"
 }
 
-const mineCount = 20;                          // 게임 내 지뢰 총 개수
+const mineCount = 40;                          // 게임 내 지뢰 총 개수
 let gameStatus = gameStatusObj.NOT_STARTED;    // 현재 게임 상태
 let mines = new Set();                         // 지뢰가 있는 곳의 ID Set
 let flags = new Set();                         // 깃발이 있는 곳의 ID Set
@@ -25,6 +25,9 @@ let polygons = Array.from(document.querySelectorAll('polygon'));
 polygons.forEach((polygon) => {
     polygonObjs[polygon.id] = 0;
 });
+
+let stopwatchInterval = null;
+let secondsElapsed = 0;
 //#endregion
 
 
@@ -183,11 +186,25 @@ function displayX(polygon) {
 
 /** 게임을 종료합니다. */
 function endGame() {
+    stopStopwatch();
     polygons.forEach((polygon) => {
         polygon.classList.add('game-ended');
     });
     gameStatus = gameStatusObj.ENDED;
-    console.log("Game over");
+}
+
+
+/** 
+ * 주어진 초를 'mm:ss' 형식으로 변환
+ * 
+ * @param {number} seconds
+ * @returns {string}
+ */
+function formatTime(seconds) {
+    let minutes = Math.floor(seconds / 60);
+    let secs = seconds - (minutes * 60);
+    return minutes.toString().padStart(2, '0') + ':' + 
+        secs.toString().padStart(2, '0');
 }
 
 
@@ -222,6 +239,7 @@ function leftClick() {
         let id = this.getAttribute('id');
         placeMines(id);
         countMines();
+        startStopwatch();
     }
     // 게임진행 중
     if (gameStatus===gameStatusObj.ONGOING && !flags.has(this.id) && !clickedPolygons.has(this.id)) revealPolygon(this);
@@ -329,6 +347,16 @@ function resetGame() {
     clickedPolygons.clear();
     polygonObjs = {};
     polygons.forEach((polygon) => { polygonObjs[polygon.id] = 0; });
+
+    resetStopwatch(); // 스톱워치 재설정
+}
+
+
+/** 스톱워치를 초기화합니다. */
+function resetStopwatch() {
+    stopStopwatch();
+    secondsElapsed = 0;
+    document.getElementById('stopwatch').textContent = '00:00';
 }
 
 
@@ -376,6 +404,22 @@ function revealPolygon(polygon) {
 /** 우클릭을 했을 때의 동작 정의 */
 function rightClick() {
     if (gameStatus===gameStatusObj.ONGOING && !clickedPolygons.has(this.id)) toggleFlag(this);
+}
+
+
+/** 스톱워치 시작 */
+function startStopwatch() {
+    stopwatchInterval = setInterval(() => {
+        secondsElapsed++;
+        document.getElementById('stopwatch').textContent = formatTime(secondsElapsed);
+    }, 1000);
+}
+
+
+/** 스톱워치 중지 */
+function stopStopwatch() {
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = null;
 }
 
 

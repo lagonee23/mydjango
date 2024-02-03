@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Board
+from .forms import RegistForm
+from .forms import RegistModelForm
 
 
 # Create your views here.
@@ -20,27 +22,34 @@ def read(request, id):
     return render(request, 'board/read.html', {'board':board})
 
 
+# 일반 Form을 사용한 예
 def regist(request):
     if request.method == 'POST':
-        title = request.POST['title']
-        writer = request.POST.get('writer')
-        content = request.POST['content']
-        Board(title=title, writer=writer, content=content).save()
-        return redirect(reverse('board:list'))
+        registForm = RegistForm(request.POST)
+        if registForm.is_valid():  # 유효성 검증
+            title = registForm.cleaned_data['title']
+            writer = registForm.cleaned_data['writer']
+            content = registForm.cleaned_data['content']
+            Board(title=title, writer=writer, content=content).save()  # 모델에 저장
+            return redirect(reverse('board:list'))
+        else:
+            return render(request, 'board/regist.html', {'form': registForm})
     else:
-        return render(request, 'board/regist.html')
+        form = RegistForm()
+        return render(request, 'board/regist.html', {'form': form})
     
-    
+   
+# 모델 Form을 사용한 예 
 def edit(request, id):
     board = Board.objects.get(pk=id)
     if request.method == 'POST':
-        board.title = request.POST['title']
-        board.writer = request.POST.get('writer')
-        board.content = request.POST['content']
-        board.save()
+        form = RegistModelForm(request.POST, instance=board)
+        if form.is_valid():
+            form.save()
         return redirect(reverse('board:read', args=(id,)))
     else:
-        return render(request, 'board/edit.html', {'board': board})
+        form = RegistModelForm(instance=board)
+    return render(request, 'board/edit.html', {'form': form})
     
     
 def remove(request, id):
