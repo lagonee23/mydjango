@@ -6,7 +6,7 @@ const gameStatusObj = {
     ENDED: "ended"
 }
 
-const mineCount = 40;                          // 게임 내 지뢰 총 개수
+const mineCount = 15;                          // 게임 내 지뢰 총 개수(40)
 let gameStatus = gameStatusObj.NOT_STARTED;    // 현재 게임 상태
 let mines = new Set();                         // 지뢰가 있는 곳의 ID Set
 let flags = new Set();                         // 깃발이 있는 곳의 ID Set
@@ -58,6 +58,27 @@ document.getElementById('resetButton').addEventListener('click', resetGame);
 
 
 //#region 함수
+/** Session storaget의 평균기록을 표시합니다. */
+function calculateAverageTime() {
+    let times = JSON.parse(sessionStorage.getItem('times')) || [];
+    if (times.length > 0) {
+        let sum = times.reduce((a, b) => a + b, 0);
+        let averageTime = sum / times.length;
+        document.getElementById('averageTime').textContent = '평균 시간: ' + formatTime(Math.round(averageTime));
+    }
+}
+
+
+/** Session storage의 최고기록을 표시합니다. */
+function calculateBestTime() {
+    let times = JSON.parse(sessionStorage.getItem('times')) || [];
+    if (times.length > 0) {
+        let bestTime = Math.min(...times);
+        document.getElementById('bestTime').textContent = '최고 기록: ' + formatTime(bestTime);
+    }
+}
+
+
 /**
  * 중앙 좌표 계산 함수
  * 
@@ -246,6 +267,9 @@ function leftClick() {
     // 모든 polygon이 클릭되었는지 확인하고, 그렇다면 게임 종료
     if (Object.keys(polygonObjs).every(id => clickedPolygons.has(id))) {
         endGame();
+        saveTime();
+        calculateBestTime();
+        calculateAverageTime();
         mines.forEach((mine) => {
             if (!flags.has(mine)) toggleFlag(document.getElementById(mine));    // 깃발이 없는 곳에 깃발 표시
         });
@@ -276,6 +300,9 @@ function leftRightMouseDown(event, polygon) {
                 // 모든 polygon이 클릭되었는지 확인하고, 그렇다면 게임 종료
                 if (Object.keys(polygonObjs).every(id => clickedPolygons.has(id))) {
                     endGame();
+                    saveTime();
+                    calculateBestTime();
+                    calculateAverageTime();
                     // 게임종료 후 남은 polygon에 깃발 표시
                     mines.forEach((mine) => {
                         if (!flags.has(mine)) toggleFlag(document.getElementById(mine));
@@ -404,6 +431,14 @@ function revealPolygon(polygon) {
 /** 우클릭을 했을 때의 동작 정의 */
 function rightClick() {
     if (gameStatus===gameStatusObj.ONGOING && !clickedPolygons.has(this.id)) toggleFlag(this);
+}
+
+
+/** 스톱워치 시간을 Session storage에 저장합니다. */
+function saveTime() {
+    let times = JSON.parse(sessionStorage.getItem('times')) || [];
+    times.push(secondsElapsed);
+    sessionStorage.setItem('times', JSON.stringify(times));
 }
 
 
