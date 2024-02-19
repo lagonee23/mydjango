@@ -4,10 +4,9 @@
 {% block title %}BeeCareful{% endblock  %}
 
 {% block main %}
-<nav>BeeCareful(minesweeper game)</nav>
 <div class="container-fluid px-5">
     <div class="row text-center">
-        <div class="col">깃발</div>
+        <div class="col" id="flagCount">깃발</div>
         <div class="col" id="stopwatch">00:00</div>
         <div class="col">
             <!-- 게임 리셋 버튼 추가 -->
@@ -24,7 +23,7 @@
     </div>
     <!-- 스크립트 파일 가져오기 -->
     <script src="{% static 'minesweeper/js/game.js' %}"></script>
-    <h2 class="text-center">아무곳이나 눌러 게임을 시작하십시오.</h2>
+    <h2 class="text-center" id="guide-message">아무곳이나 눌러 게임을 시작하십시오.</h2>
     <div class="row text-center">
         <div class="col" id="bestTime">
             최고기록: 0

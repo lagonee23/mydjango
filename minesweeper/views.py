@@ -23,7 +23,6 @@ def index(request):
             polygons.append({"points":points, "polygon_id":polygon_id})
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     context = { 
-               "latest_question_list": latest_question_list,
                "polygons": polygons,
                "svg_id": f"{x_len}-{y_len}",
     }

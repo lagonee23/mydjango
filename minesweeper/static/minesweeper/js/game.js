@@ -3,7 +3,8 @@
 const gameStatusObj = {
     NOT_STARTED: "notStarted",
     ONGOING: "ongoing",
-    ENDED: "ended"
+    WIN: "win",
+    LOSE: "lost",
 }
 
 const mineCount = 15;                          // 게임 내 지뢰 총 개수(40)
@@ -49,6 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (gameStatus===gameStatusObj.ONGOING && leftDown && rightDown) leftRightMouseUp(this);
         });
     });
+    displayFlagCount();
+    calculateBestTime();
+    calculateAverageTime();
 });
 
 
@@ -139,6 +143,12 @@ function displayAllMines(polygon, imgURL) {
 }
 
 
+/** 현재 깃발의 개수를 계산하고 웹페이지에 표시합니다. */
+function displayFlagCount() {
+    document.getElementById('flagCount').textContent = '🚩' + (mineCount - flags.size).toString();
+}
+
+
 /**
  * 지뢰를 표시합니다.
  * 
@@ -211,7 +221,14 @@ function endGame() {
     polygons.forEach((polygon) => {
         polygon.classList.add('game-ended');
     });
-    gameStatus = gameStatusObj.ENDED;
+    if (gameStatus === gameStatusObj.WIN) {
+        saveTime();
+        calculateBestTime();
+        calculateAverageTime();
+        mines.forEach((mine) => {
+            if (!flags.has(mine)) toggleFlag(document.getElementById(mine));  // 깃발이 없는 곳에 깃발 표시
+        });
+    }
 }
 
 
@@ -261,18 +278,14 @@ function leftClick() {
         placeMines(id);
         countMines();
         startStopwatch();
+        document.getElementById("guide-message").textContent = "벌을 피해 꿀을 채취하십시오."
     }
     // 게임진행 중
     if (gameStatus===gameStatusObj.ONGOING && !flags.has(this.id) && !clickedPolygons.has(this.id)) revealPolygon(this);
     // 모든 polygon이 클릭되었는지 확인하고, 그렇다면 게임 종료
     if (Object.keys(polygonObjs).every(id => clickedPolygons.has(id))) {
+        gameStatus = gameStatusObj.WIN;
         endGame();
-        saveTime();
-        calculateBestTime();
-        calculateAverageTime();
-        mines.forEach((mine) => {
-            if (!flags.has(mine)) toggleFlag(document.getElementById(mine));    // 깃발이 없는 곳에 깃발 표시
-        });
     }
 }
 
@@ -299,14 +312,8 @@ function leftRightMouseDown(event, polygon) {
                 });
                 // 모든 polygon이 클릭되었는지 확인하고, 그렇다면 게임 종료
                 if (Object.keys(polygonObjs).every(id => clickedPolygons.has(id))) {
+                    gameStatus = gameStatusObj.WIN;
                     endGame();
-                    saveTime();
-                    calculateBestTime();
-                    calculateAverageTime();
-                    // 게임종료 후 남은 polygon에 깃발 표시
-                    mines.forEach((mine) => {
-                        if (!flags.has(mine)) toggleFlag(document.getElementById(mine));
-                    });
                 }
             // 아무 일도 일어나지 않는 경우
             } else {
@@ -375,7 +382,8 @@ function resetGame() {
     polygonObjs = {};
     polygons.forEach((polygon) => { polygonObjs[polygon.id] = 0; });
 
-    resetStopwatch(); // 스톱워치 재설정
+    resetStopwatch();
+    displayFlagCount();
 }
 
 
@@ -399,6 +407,7 @@ function revealPolygon(polygon) {
     
     // 지뢰가 있는 경우
     if (mines.has(polygon.id)) {
+        gameStatus = gameStatusObj.LOSE;
         displayAllMines(polygon, "/static/minesweeper/images/bee.png");
         // 잘못된 곳에 깃발이 있는 경우 'X'를 표시
         flags.forEach((flag) => {
@@ -489,5 +498,7 @@ function toggleFlag(polygon) {
         
         board.appendChild(flagElement);
     }
+    displayFlagCount();
 }
+
 //#endregion
