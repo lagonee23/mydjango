@@ -1,8 +1,0 @@
-{% extends "board/base.html" %}
-{% block title %}{% endblock  %}
-{% block content %}
-<form method='post'>
-    {% csrf_token %}
-    삭제하시겠습니까? <button type="submit">예</button>
-</form>
-{% endblock %}
