@@ -19,6 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),    # 관리자 페이지를 위한 URL 매핑
-    path('minesweeper/', include('minesweeper.urls')),    # 'minesweeper' 앱의 URL들을 포함하기 위한 URL 매핑
+    path('', include('minesweeper.urls')),    # 'minesweeper' 앱의 URL들을 포함하기 위한 URL 매핑
     path('board/', include('board.urls')),
 ]

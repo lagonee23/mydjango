@@ -1,0 +1,21 @@
+polygon {
+    fill: gold;
+    stroke: peru;
+    stroke-width:0.7;
+}
+
+polygon:hover {
+    fill: lemonchiffon;
+}
+
+polygon.game-ended {
+    pointer-events: none;
+}
+
+svg text {
+    cursor: default;
+}
+
+.highlight {
+    fill: lemonchiffon;
+}
