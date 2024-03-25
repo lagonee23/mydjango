@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',    
     
-    'board.apps.BoardConfig',
     'minesweeper.apps.MinesweeperConfig',  # 앱 등록
 ]
 
