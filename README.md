@@ -17,7 +17,7 @@
 - **AWS ELASTIC BEANSTALK**: 해당 장고앱은 AWS의 Elastic BeanStalk를 통해 배포되었습니다. 배포를 위해 `settings.py` 파일에 호스트를 추가, 그리고 `.ebextensions` 디렉토리를 생성하여 `django.config` 파일을 추가하였습니다.
 
 ## 시작하기
-- 아래 도메인에 접속하여 게임을 시작할 수 있습니다.
+- 아래 도메인에 접속하여 게임을 시작할 수 있습니다. (Ctrl+좌클릭)
     <br>
     http://my-django-app-env.eba-euwm4ptj.ap-northeast-2.elasticbeanstalk.com/ <br>
 ![게임 스크린샷](https://github.com/lagonee23/mydjango/assets/59104524/491f733f-9316-48d3-8870-db38d801e36d)
@@ -38,7 +38,7 @@
         ```bash
         pipenv install
         ```
-        🔑 pipenv 가상환경에 대한 사용법은 [공식문서](https://pipenv.pypa.io/en/latest/)를 참고하십시오.
+        🔑 pipenv 가상환경에 대한 사용법은 <a href="https://pipenv.pypa.io/en/latest/">공식문서</a>를 참고하십시오.
     4. Django 서버를 실행합니다.
         ```bash
         python manage.py runserver
