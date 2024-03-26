@@ -17,8 +17,9 @@
 - **AWS ELASTIC BEANSTALK**: 해당 장고앱은 AWS의 Elastic BeanStalk를 통해 배포되었습니다. 배포를 위해 `settings.py` 파일에 호스트를 추가, 그리고 `.ebextensions` 디렉토리를 생성하여 `django.config` 파일을 추가하였습니다.
 
 ## 시작하기
-- 아래 도메인에 접속하여 게임을 시작할 수 있습니다.<br>
-http://My-django-app-env.eba-najxrmmr.ap-northeast-2.elasticbeanstalk.com <br>
+- 아래 도메인에 접속하여 게임을 시작할 수 있습니다.
+    <br>
+    http://my-django-app-env.eba-euwm4ptj.ap-northeast-2.elasticbeanstalk.com/ <br>
 ![게임 스크린샷](https://github.com/lagonee23/mydjango/assets/59104524/491f733f-9316-48d3-8870-db38d801e36d)
 - 만약 도메인에 접속이 불가하거나, 프로젝트를 직접 로컬에 설치하여 게임을 플레이하고 싶으시다면 아래의 단계를 따르십시오.
     1. 저장소를 클론합니다.
