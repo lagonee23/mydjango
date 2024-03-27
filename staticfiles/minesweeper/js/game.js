@@ -7,7 +7,7 @@ const gameStatusObj = {
     LOSE: "lost",
 }
 
-const mineCount = 20;                          // 게임 내 지뢰 총 개수(40)
+const mineCount = 30;                          // 게임 내 지뢰 총 개수(40)
 let gameStatus = gameStatusObj.NOT_STARTED;    // 현재 게임 상태
 let mines = new Set();                         // 지뢰가 있는 곳의 ID Set
 let flags = new Set();                         // 깃발이 있는 곳의 ID Set

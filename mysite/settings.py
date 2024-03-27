@@ -128,6 +128,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+
+# collectstatic이 정적 파일을 모으는 디렉토리 지정
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# COOP 보안 정책 비활성화
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
