@@ -7,7 +7,7 @@ const gameStatusObj = {
     LOSE: "lost",
 }
 
-const mineCount = 30;                          // 게임 내 지뢰 총 개수(40)
+const mineCount = 40;                          // 게임 내 지뢰 총 개수(40)
 let gameStatus = gameStatusObj.NOT_STARTED;    // 현재 게임 상태
 let mines = new Set();                         // 지뢰가 있는 곳의 ID Set
 let flags = new Set();                         // 깃발이 있는 곳의 ID Set
@@ -36,7 +36,7 @@ let secondsElapsed = 0;
 //#region 리스너
 document.addEventListener('DOMContentLoaded', function() {
     // SVG 요소에 대해 브라우저의 기본 우클릭 이벤트와 드래그를 막습니다.
-    let svgElement = document.querySelector('svg');
+    let svgElement = document.querySelector('svg[id^="board"]');
     svgElement.addEventListener('contextmenu', event => event.preventDefault());
     svgElement.addEventListener('mousedown', event => event.preventDefault());
     polygons.forEach(function(polygon) {
