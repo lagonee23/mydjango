@@ -19,9 +19,9 @@
 ## 시작하기
 - 아래 도메인에 접속하여 게임을 시작할 수 있습니다. (Ctrl+좌클릭)
     <br>
-    http://my-django-app-env.eba-3pdmhemm.ap-northeast-2.elasticbeanstalk.com/ 
+    http://my-djangp-app-env.eba-amptu2dz.ap-northeast-2.elasticbeanstalk.com/
     <br>
-![게임 스크린샷](https://github.com/lagonee23/mydjango/assets/59104524/9b204b89-1ffe-4d19-96ec-5cc30e3a3269)
+    ![게임 스크린샷](https://github.com/lagonee23/mydjango/assets/59104524/6dc66966-b77e-45f9-a341-4f823915399f)
 - 만약 도메인에 접속이 불가하거나, 프로젝트를 직접 로컬에 설치하여 게임을 플레이하고 싶으시다면 아래의 단계를 따르십시오.
     1. 저장소를 클론합니다.
         ```bash
