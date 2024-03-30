@@ -7,7 +7,7 @@ const gameStatusObj = {
     LOSE: "lost",
 }
 
-const mineCount = 40;                          // 게임 내 지뢰 총 개수(40)
+const mineCount = 20;                          // 게임 내 지뢰 총 개수(40)
 let gameStatus = gameStatusObj.NOT_STARTED;    // 현재 게임 상태
 let mines = new Set();                         // 지뢰가 있는 곳의 ID Set
 let flags = new Set();                         // 깃발이 있는 곳의 ID Set
@@ -29,6 +29,8 @@ polygons.forEach((polygon) => {
 
 let stopwatchInterval = null;
 let secondsElapsed = 0;
+
+let guideMessage = "";
 //#endregion
 
 
@@ -39,6 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let svgElement = document.querySelector('svg[id^="board"]');
     svgElement.addEventListener('contextmenu', event => event.preventDefault());
     svgElement.addEventListener('mousedown', event => event.preventDefault());
+
+    guideMessage = document.getElementById('guide-message').innerText;
+    
     polygons.forEach(function(polygon) {
         polygon.addEventListener('click', leftClick);
         polygon.addEventListener('contextmenu', rightClick);
@@ -228,6 +233,9 @@ function endGame() {
         mines.forEach((mine) => {
             if (!flags.has(mine)) toggleFlag(document.getElementById(mine));  // 깃발이 없는 곳에 깃발 표시
         });
+        document.getElementById("guide-message").textContent = "YOU WIN"
+    } else if (gameStatus === gameStatusObj.LOSE) {
+        document.getElementById("guide-message").textContent = "YOU LOSE"
     }
 }
 
@@ -381,6 +389,9 @@ function resetGame() {
     clickedPolygons.clear();
     polygonObjs = {};
     polygons.forEach((polygon) => { polygonObjs[polygon.id] = 0; });
+
+    // 게임 안내 메세지 초기화
+    document.getElementById("guide-message").textContent = guideMessage;
 
     resetStopwatch();
     displayFlagCount();
