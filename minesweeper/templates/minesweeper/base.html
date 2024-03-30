@@ -9,8 +9,18 @@
     <meta name="description" content="육각지뢰찾기입니다. 벌을 피해 벌집 내 모든 꿀을 채취해보세요!">
     <title>{% block title %}{% endblock  %}</title>
 
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'minesweeper/images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'minesweeper/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static  'minesweeper/images/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'minesweeper/images/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'minesweeper/images/safari-pinned-tab.svg' %}" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
     <link rel="stylesheet" href="{% static 'minesweeper/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'minesweeper/css/navbars.css' %}">
+    <script src="{% static 'minesweeper/js/color-modes.js' %}"></script>
 
     <!-- Bootstrap Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
@@ -18,8 +28,6 @@
 
     <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/navbars/"> -->
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"> -->
-    
-    <script src="{% static 'minesweeper/js/color-modes.js' %}"></script>
 </head>
 <body>
     <!-- SVG 스프라이트 컨테이너: 화면에 직접 표시되지 않습니다. -->
