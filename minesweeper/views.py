@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 # /minesweeper/
 def index(request):
-    x_len, y_len = 29, 15    # 가로,세로 길이
+    x_len, y_len = 27, 15    # 가로,세로 길이(27, 15)
     polygons = []
     for y in range(y_len):
         for x in range(x_len - (y % 2)):

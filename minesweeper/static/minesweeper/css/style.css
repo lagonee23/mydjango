@@ -1,10 +1,9 @@
-polygon {
+polygon.hover {
     fill: gold;
     stroke: peru;
-    stroke-width:0.7;
 }
 
-polygon:hover {
+polygon.hover:hover {
     fill: lemonchiffon;
 }
 
@@ -12,10 +11,19 @@ polygon.game-ended {
     pointer-events: none;
 }
 
+polygon.orangered {
+    fill: orangered;
+}
+
+polygon.revealed {
+    fill: peru;
+    stroke: sienna;
+}
+
 svg text {
     cursor: default;
 }
 
-.highlight {
+polygon.highlight {
     fill: lemonchiffon;
 }

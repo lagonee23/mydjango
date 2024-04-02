@@ -16,7 +16,7 @@
     <!-- 한 변의 길이는 8(7)으로 -->
     <svg id="board{{ svg_id }}" width="950" height="440" viewBox="0 0 420 190">
         {% for polygon in polygons %}
-        <polygon points = "{{ polygon.points }}" id="{{ polygon.polygon_id }}"/>
+        <polygon points="{{ polygon.points }}" id="{{ polygon.polygon_id }}" class='hover'/>
         {% endfor %}
     </svg>
 </div>

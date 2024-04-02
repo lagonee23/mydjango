@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.static import serve
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
+
+urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),    # 관리자 페이지를 위한 URL 매핑
     path('', include('minesweeper.urls')),    # 'minesweeper' 앱의 URL들을 포함하기 위한 URL 매핑
     
     re_path(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),    # 미디어 파일 요청을 처리하기 위한 URL 패턴
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),   # 정적 파일 요청을 처리하기 위한 URL 패턴
-]
+)
