@@ -24,7 +24,7 @@ msgstr "マインスイーパー"
 
 #: .\minesweeper\templates\minesweeper\base.html:105
 msgid "게임 설명"
-msgstr "ゲームの説明"
+msgstr "ゲーム説明"
 
 #: .\minesweeper\templates\minesweeper\base.html:124 .\mysite\settings.py:123
 msgid "English"
