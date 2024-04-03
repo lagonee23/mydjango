@@ -123,6 +123,7 @@ LANGUAGES = [
     ('en', _('English')),
     ('ko', _('Korean')),
     ('es', _('Spanish')),
+    ('ja', _('Japanese')),
 ] 
 
 # 사용할 번역 파일의 디렉토리 설정

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-01 13:25+0900\n"
+"POT-Creation-Date: 2024-04-03 19:53+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,22 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-#: .\mysite\settings.py:123
+
+#: .\minesweeper\templates\minesweeper\base.html:101
+msgid "minesweeper"
+msgstr "지뢰찾기"
+
+#: .\minesweeper\templates\minesweeper\base.html:105
+msgid "게임 설명"
+msgstr ""
+
+#: .\minesweeper\templates\minesweeper\base.html:124 .\mysite\settings.py:123
 msgid "English"
-msgstr ""
+msgstr "영어"
 
-#: .\mysite\settings.py:124
+#: .\minesweeper\templates\minesweeper\base.html:125 .\mysite\settings.py:126
+msgid "Japanese"
+msgstr "일본어"
+
+#: .\minesweeper\templates\minesweeper\base.html:126 .\mysite\settings.py:124
 msgid "Korean"
-msgstr ""
+msgstr "한국어"
 
-#: .\mysite\settings.py:125 .\mysite\settings.py:126
+#: .\minesweeper\templates\minesweeper\base.html:127 .\mysite\settings.py:125
 msgid "Spanish"
-msgstr ""
-
-#: .\mysite\settings.py:127
-msgid "Simplified Chinese"
-msgstr ""
-
-#: .\mysite\settings.py:128
-msgid "Traditional Chinese"
-msgstr ""
+msgstr "스페인어"

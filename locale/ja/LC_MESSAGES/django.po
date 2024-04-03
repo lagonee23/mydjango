@@ -16,31 +16,28 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: .\minesweeper\templates\minesweeper\base.html:101
 msgid "minesweeper"
-msgstr ""
+msgstr "マインスイーパー"
 
 #: .\minesweeper\templates\minesweeper\base.html:105
 msgid "게임 설명"
-msgstr "Description"
+msgstr "ゲームの説明"
 
 #: .\minesweeper\templates\minesweeper\base.html:124 .\mysite\settings.py:123
 msgid "English"
-msgstr ""
+msgstr "英語"
 
 #: .\minesweeper\templates\minesweeper\base.html:125 .\mysite\settings.py:126
 msgid "Japanese"
-msgstr ""
+msgstr "日本語"
 
 #: .\minesweeper\templates\minesweeper\base.html:126 .\mysite\settings.py:124
 msgid "Korean"
-msgstr ""
+msgstr "韓国語"
 
 #: .\minesweeper\templates\minesweeper\base.html:127 .\mysite\settings.py:125
 msgid "Spanish"
-msgstr ""
-
-#~ msgid "사과"
-#~ msgstr "Apple"
+msgstr "スペイン語"

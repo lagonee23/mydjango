@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="ko" data-bs-theme="auto">
@@ -97,11 +98,11 @@
                     	<span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
-                    	<a class="navbar-brand" href="#">BeeCareful(minesweeper)</a>
+                    	<a class="navbar-brand" href="#">BeeCareful({% translate "minesweeper" %})</a>
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-									게임 설명
+									{% translate "게임 설명" %}
 								</a>
 								<ul class="dropdown-menu">
 									<li><a class="dropdown-item" href="#">Action</a></li>
@@ -110,8 +111,21 @@
 								</ul>
 							</li>
 						</ul>
-						<div class="d-lg-flex col-lg-3 justify-content-lg-end">
-							<button class="btn btn-primary">Button</button>
+						<div class="btn-group d-lg-flex justify-content-lg-end" role="group">
+							<button id="navbarDropdownMenuLink" 
+									type="button" 
+									class="btn btn-light btn-sm dropdown-toggle" 
+									data-bs-toggle="dropdown" 
+									aria-expanded="false" 
+									style="font-weight: 600;">
+                                <!-- 자바스크립트로 설정될 텍스트 -->
+                            </button>
+                            <ul class="dropdown-menu shadow" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="/en/">{% translate "English" %}</a></li>
+                                <li><a class="dropdown-item" href="/ja/">{% translate "Japanese" %}</a></li>
+                                <li><a class="dropdown-item" href="/ko/">{% translate "Korean" %}</a></li>
+                                <li><a class="dropdown-item" href="/es/">{% translate "Spanish" %}</a></li>
+                            </ul>
 						</div>
                     </div>
                 </div>
@@ -119,7 +133,26 @@
             {% block main %}{% endblock  %}
         </div>
     </main>
-
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 현재 URL 체크
+            var currentPath = window.location.pathname;
+        
+            // 버튼의 텍스트 설정
+            var languageButton = document.getElementById('navbarDropdownMenuLink');
+            if (currentPath.startsWith('/ko/')) {
+                languageButton.textContent = '한국어';
+            } else if (currentPath.startsWith('/en/')) {
+                languageButton.textContent = 'English';
+            } else if (currentPath.startsWith('/es/')) {
+                languageButton.textContent = 'Español';
+            } else if (currentPath.startsWith('/ja/')) {
+                languageButton.textContent = '日本語';
+            }
+        });
+    </script>
+    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
