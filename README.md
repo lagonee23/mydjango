@@ -22,6 +22,7 @@
     http://my-django-app-env.eba-3pdmhemm.ap-northeast-2.elasticbeanstalk.com/
     <br>
     ![게임 스크린샷](https://github.com/lagonee23/mydjango/assets/59104524/1c39c0f5-b7d4-4472-adfe-b1499b82d9a6)
+    ![게임 스크린샷](https://github.com/lagonee23/mydjango/assets/59104524/b0db36c3-57d5-4b6b-bfdb-3fa49f4ad5e8)
 - 만약 도메인에 접속이 불가하거나, 프로젝트를 직접 로컬에 설치하여 게임을 플레이하고 싶으시다면 아래의 단계를 따르십시오.
     1. 저장소를 클론합니다.
         ```bash
