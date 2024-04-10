@@ -14,7 +14,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'minesweeper/images/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'minesweeper/images/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static  'minesweeper/images/favicon-16x16.png' %}">
-
     <link rel="manifest" href="{% static 'minesweeper/images/site.webmanifest' %}">
     <link rel="mask-icon" href="{% static 'minesweeper/images/safari-pinned-tab.svg' %}" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
@@ -87,50 +86,39 @@
 
     <main>
         <div class="container">
-              <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Thirteenth navbar example">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" 
-							type="button" 
-							data-bs-toggle="collapse" 
-							data-bs-target="#navbarsExample11" 
-							aria-controls="navbarsExample11" 
-							aria-expanded="false" 
-							aria-label="Toggle navigation">
-                    	<span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
-                    	<a class="navbar-brand" href="#">BeeCareful({% translate "minesweeper" %})</a>
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-									{% translate "게임 설명" %}
-								</a>
-								<ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="#">Action</a></li>
-									<li><a class="dropdown-item" href="#">Another action</a></li>
-									<li><a class="dropdown-item" href="#">Something else here</a></li>
-								</ul>
-							</li>
-						</ul>
-						<div class="btn-group d-lg-flex justify-content-lg-end" role="group">
-							<button id="navbarDropdownMenuLink" 
-									type="button" 
-									class="btn btn-light btn-sm dropdown-toggle" 
-									data-bs-toggle="dropdown" 
-									aria-expanded="false" 
-									style="font-weight: 600;">
-                                <!-- 자바스크립트로 설정될 텍스트 -->
-                            </button>
-                            <ul class="dropdown-menu shadow" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="/en/">{% translate "English" %}</a></li>
-                                <li><a class="dropdown-item" href="/ja/">{% translate "Japanese" %}</a></li>
-                                <li><a class="dropdown-item" href="/ko/">{% translate "Korean" %}</a></li>
-                                <li><a class="dropdown-item" href="/es/">{% translate "Spanish" %}</a></li>
-                            </ul>
-						</div>
+            <nav class="navbar navbar-expand-lg rounded" style="background-color: sienna;" aria-label="Thirteenth navbar example">
+                <div class="container-fluid d-flex justify-content-between">
+                    <!-- 왼쪽 측면에 배치 -->
+                    <a href="javascript:location.reload()" class="disabled" aria-disabled="true">
+                        <img src="{% static 'minesweeper/images/BeeCarefule.svg' %}" alt="Logo" style="height: 40px;">
+                    </a>
+                    <div class="collapse navbar-collapse">
+                        <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                            <li class="nav-item">
+                                <a class="nav-link disabled" aria-disabled="true">{% translate "지뢰찾기 게임" %}</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 오른쪽 측면에 배치 -->
+                    <div class="btn-group d-lg-flex justify-content-lg-end" role="group"  style="padding-left: 100px;">
+                        <button id="navbarDropdownMenuLink" 
+                                type="button" 
+                                class="btn btn-light btn-sm dropdown-toggle" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false" 
+                                style="font-weight: 600;">
+                            <!-- 자바스크립트로 설정될 텍스트 -->
+                        </button>
+                        <ul class="dropdown-menu shadow" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="/en/">{% translate "English" %}</a></li>
+                            <li><a class="dropdown-item" href="/ja/">{% translate "Japanese" %}</a></li>
+                            <li><a class="dropdown-item" href="/ko/">{% translate "Korean" %}</a></li>
+                            <li><a class="dropdown-item" href="/es/">{% translate "Spanish" %}</a></li>
+                        </ul>
                     </div>
                 </div>
-              </nav>
+            </nav>
             {% block main %}{% endblock  %}
         </div>
     </main>

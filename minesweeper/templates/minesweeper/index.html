@@ -14,15 +14,14 @@
 </div>
 <div class="d-flex justify-content-center">
     <!-- 한 변의 길이는 8(7)으로 -->
-    <svg id="board{{ svg_id }}" width="950" height="440" viewBox="0 0 420 190">
+    <svg id="board{{ svg_id }}" width="1020" height="450" viewBox="0 0 480 210">
         {% for polygon in polygons %}
         <polygon points="{{ polygon.points }}" id="{{ polygon.polygon_id }}" class='hover'/>
         {% endfor %}
     </svg>
 </div>
-<!-- 스크립트 파일 가져오기 -->
-<script src="{% static 'minesweeper/js/game.js' %}"></script>
-<h2 class="text-center" id="guide-message">아무 곳이나 눌러 게임을 시작하십시오.</h2>
+
+<h3 class="text-center" id="guide-message">아무 곳이나 눌러 게임을 시작하십시오.</h3>
 <div class="row text-center">
     <div class="col" id="bestTime">
         최고기록: 0
@@ -31,4 +30,7 @@
         평균기록: 0
     </div>
 </div>
+
+<!-- 스크립트 파일 가져오기 -->
+<script src="{% static 'minesweeper/js/game.js' %}"></script>
 {% endblock  %}

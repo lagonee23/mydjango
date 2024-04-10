@@ -27,3 +27,22 @@ svg text {
 polygon.highlight {
     fill: lemonchiffon;
 }
+  
+
+
+.dropdown-description {
+    display: none; /* 기본적으로 숨김 처리 */
+    position: absolute; /* 상대적 위치 설정 */
+    left: 100%; /* dropdown-menu의 오른쪽에 위치 */
+    top: 0; /* 초기 위치 설정 */
+    width: 200px; /* 설명란의 너비 */
+    background-color: #f8f9fa; /* 배경색 설정 */
+    border: 1px solid #ddd; /* 테두리 설정 */
+    padding: 10px; /* 내부 여백 설정 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
+  }
+  
+.hidden {
+display: none; /* 숨김 처리 */
+}
+  
