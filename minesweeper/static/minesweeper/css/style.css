@@ -28,8 +28,6 @@ polygon.highlight {
     fill: lemonchiffon;
 }
   
-
-
 .dropdown-description {
     display: none; /* 기본적으로 숨김 처리 */
     position: absolute; /* 상대적 위치 설정 */
@@ -45,4 +43,3 @@ polygon.highlight {
 .hidden {
 display: none; /* 숨김 처리 */
 }
-  
