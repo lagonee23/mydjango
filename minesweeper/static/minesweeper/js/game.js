@@ -74,7 +74,7 @@ function calculateAverageTime() {
     if (times.length > 0) {
         let sum = times.reduce((a, b) => a + b, 0);
         let averageTime = sum / times.length;
-        document.getElementById('averageTime').textContent = '평균 시간: ' + formatTime(Math.round(averageTime));
+        document.getElementById('averageTime').textContent = formatTime(Math.round(averageTime));
     }
 }
 
@@ -84,7 +84,7 @@ function calculateBestTime() {
     let times = JSON.parse(sessionStorage.getItem('times')) || [];
     if (times.length > 0) {
         let bestTime = Math.min(...times);
-        document.getElementById('bestTime').textContent = '최고 기록: ' + formatTime(bestTime);
+        document.getElementById('bestTime').textContent = formatTime(bestTime);
     }
 }
 

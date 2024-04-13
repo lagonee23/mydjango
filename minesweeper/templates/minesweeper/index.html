@@ -2,36 +2,50 @@
 {% load static %}
 
 {% block title %}BeeCareful{% endblock  %}
+{% block link %}
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+{% endblock  %}
 
 {% block main %}
-<div class="row text-center justify-content-center px-5 fs-4" style="padding-bottom: 7px;">
-    <div class="col-2" id="flagCount">깃발</div>
-    <div class="col-2" id="stopwatch">00:00</div>
+<div class="row text-center justify-content-center px-5 fs-4 d-none d-md-flex align-items-center" style="padding-bottom: 6px;">
+    <div class="col-2" id="flagCount" style="user-select: none;">깃발</div>
+    <div class="col-2" id="stopwatch" style="user-select: none;">00:00</div>
     <div class="col-2">
-        <!-- 게임 리셋 버튼 추가 -->
+        <!-- 게임 리셋 버튼 -->
         <button id="resetButton" type="button" class="btn btn-secondary" style="padding-left: 10px;">
-            🔄RESET
+            🔄RESTART
         </button>
     </div>
 </div>
-<div class="d-flex justify-content-center">
-    <!-- 한 변의 길이는 8(7)으로 -->
-    <svg id="board{{ svg_id }}" width="1020" height="450" viewBox="0 0 480 210">
-        {% for polygon in polygons %}
-        <polygon points="{{ polygon.points }}" id="{{ polygon.polygon_id }}" class='hover'/>
-        {% endfor %}
-    </svg>
+
+<div class="row align-items-center">
+    <div class="col d-none d-xxl-block">
+        <div class="card text-center border-secondary-subtle" style="background-color: gold;">
+            <h6 class="card-header text-white" style="background-color: sienna;">최고 기록</h6>
+            <div class="card-body text-dark">
+                <span id="bestTime" class="record">00:00</span> 
+            </div>
+        </div>
+    </div>
+    <div class="col px-0">
+        <!-- 한 변의 길이는 8(7)으로 -->
+        <svg id="board{{ svg_id }}" width="1020" height="450" viewBox="0 0 480 210">
+            {% for polygon in polygons %}
+            <polygon points="{{ polygon.points }}" id="{{ polygon.polygon_id }}" class='hover'/>
+            {% endfor %}
+        </svg>
+    </div>
+    <div class="col d-none d-xxl-block">
+        <div class="card text-center border-secondary-subtle" style="background-color: gold;">
+            <h6 class="card-header text-white" style="background-color: sienna;">평균 기록</h6>
+            <div class="card-body text-dark">
+                <span id="averageTime" class="record">00:00</span> 
+            </div>
+        </div>
+    </div>
 </div>
 
 <h3 class="text-center" id="guide-message" style="padding-top: 7px;">아무 곳이나 눌러 게임을 시작하십시오.</h3>
-<div class="row text-center">
-    <div class="col" id="bestTime">
-        최고기록: 0
-    </div>
-    <div class="col" id="averageTime">
-        평균기록: 0
-    </div>
-</div>
 
 <!-- 스크립트 파일 가져오기 -->
 <script src="{% static 'minesweeper/js/game.js' %}"></script>
