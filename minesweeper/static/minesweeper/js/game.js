@@ -235,9 +235,9 @@ function endGame() {
         mines.forEach((mine) => {
             if (!flags.has(mine)) toggleFlag(document.getElementById(mine));  // 깃발이 없는 곳에 깃발 표시
         });
-        document.getElementById("guide-message").textContent = "YOU WIN"
+        document.getElementById("guide-message").innerHTML = "🍯🎉🥞&nbsp;&nbsp;&nbsp;YOU WIN&nbsp;&nbsp;&nbsp;🥞😎🍯"
     } else if (gameStatus === gameStatusObj.LOSE) {
-        document.getElementById("guide-message").textContent = "YOU LOSE"
+        document.getElementById("guide-message").innerHTML = "<h1>🐝😱🐝</h1>"
     }
 }
 
@@ -288,7 +288,8 @@ function leftClick() {
         placeMines(id);
         countMines();
         startStopwatch();
-        document.getElementById("guide-message").textContent = "벌을 피해 꿀을 채취하십시오."
+        const spaces = '&nbsp;'.repeat(10); // 10개의 공백 생성
+        document.getElementById("guide-message").innerHTML = `🖱️<i>Left</i> 👆${spaces}🖱️<i>Right</i> 🚩${spaces}🖱️<i>Left+Right</i> 👁️`
     }
     // 게임진행 중
     if (gameStatus===gameStatusObj.ONGOING && !flags.has(this.id) && !clickedPolygons.has(this.id)) revealPolygon(this);
