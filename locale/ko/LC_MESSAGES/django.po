@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-15 21:03+0900\n"
+"POT-Creation-Date: 2024-04-16 13:19+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,12 +38,16 @@ msgstr "한국어"
 msgid "Spanish"
 msgstr "스페인어"
 
-#: .\minesweeper\templates\minesweeper\index.html:26
+#: .\minesweeper\templates\minesweeper\index.html:27
 msgid "최고 기록"
 msgstr ""
 
 #: .\minesweeper\templates\minesweeper\index.html:42
 msgid "평균 기록"
+msgstr ""
+
+#: .\minesweeper\templates\minesweeper\index.html:51
+msgid "벌을 피해 꿀을 훔치세요!"
 msgstr ""
 
 #~ msgid "minesweeper"

@@ -28,8 +28,6 @@ polygon.highlight {
     fill: lemonchiffon;
 }
   
-
-
 .dropdown-description {
     display: none; /* 기본적으로 숨김 처리 */
     position: absolute; /* 상대적 위치 설정 */
@@ -45,4 +43,21 @@ polygon.highlight {
 .hidden {
 display: none; /* 숨김 처리 */
 }
+
+#stopwatch {
+    font-family: 'DigitNum', sans-serif;
+    font-size: 40px;
+}
+
+@font-face {
+    font-family: 'DigitNum'; /* 폰트 이름을 지정 */
+    src: url('/static/minesweeper/fonts/DS-DIGI.ttf') format('truetype'); /* TTF 파일 위치 */
+    font-weight: normal;
+    font-style: normal;
+}
+
+.record {
+    font-family: 'Inconsolata', monospace;
+    font-size: 25px;
+  }
   

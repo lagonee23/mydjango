@@ -7,7 +7,7 @@ const gameStatusObj = {
     LOSE: "lost",
 }
 
-const mineCount = 30;                          // 게임 내 지뢰 총 개수(40)
+const mineCount = 90;                          // 게임 내 지뢰 총 개수(95)
 let gameStatus = gameStatusObj.NOT_STARTED;    // 현재 게임 상태
 let mines = new Set();                         // 지뢰가 있는 곳의 ID Set
 let flags = new Set();                         // 깃발이 있는 곳의 ID Set
@@ -74,7 +74,7 @@ function calculateAverageTime() {
     if (times.length > 0) {
         let sum = times.reduce((a, b) => a + b, 0);
         let averageTime = sum / times.length;
-        document.getElementById('averageTime').textContent = '평균 시간: ' + formatTime(Math.round(averageTime));
+        document.getElementById('averageTime').textContent = formatTime(Math.round(averageTime));
     }
 }
 
@@ -84,7 +84,7 @@ function calculateBestTime() {
     let times = JSON.parse(sessionStorage.getItem('times')) || [];
     if (times.length > 0) {
         let bestTime = Math.min(...times);
-        document.getElementById('bestTime').textContent = '최고 기록: ' + formatTime(bestTime);
+        document.getElementById('bestTime').textContent = formatTime(bestTime);
     }
 }
 
@@ -187,8 +187,8 @@ function displayNum(polygon, xy, num) {
     numElement.setAttribute("y", xy.y-1);
     numElement.setAttribute("text-anchor", "middle");
     numElement.setAttribute("dominant-baseline", "central");
-    numElement.setAttribute("fill", "white");
     numElement.setAttribute("font-size", "8px");
+    numElement.setAttribute("fill", "white");
     numElement.textContent = num;
     
     numElement.addEventListener('mousedown', function(event) {
@@ -235,9 +235,9 @@ function endGame() {
         mines.forEach((mine) => {
             if (!flags.has(mine)) toggleFlag(document.getElementById(mine));  // 깃발이 없는 곳에 깃발 표시
         });
-        document.getElementById("guide-message").textContent = "YOU WIN"
+        document.getElementById("guide-message").innerHTML = "🍯🎉🥞&nbsp;&nbsp;&nbsp;YOU WIN&nbsp;&nbsp;&nbsp;🥞😎🍯"
     } else if (gameStatus === gameStatusObj.LOSE) {
-        document.getElementById("guide-message").textContent = "YOU LOSE"
+        document.getElementById("guide-message").innerHTML = "<h1>🐝😱🐝</h1>"
     }
 }
 
@@ -288,7 +288,8 @@ function leftClick() {
         placeMines(id);
         countMines();
         startStopwatch();
-        document.getElementById("guide-message").textContent = "벌을 피해 꿀을 채취하십시오."
+        const spaces = '&nbsp;'.repeat(10); // 10개의 공백 생성
+        document.getElementById("guide-message").innerHTML = `🖱️<i>Left</i> 👆${spaces}🖱️<i>Right</i> 🚩${spaces}🖱️<i>Left+Right</i> 👁️`
     }
     // 게임진행 중
     if (gameStatus===gameStatusObj.ONGOING && !flags.has(this.id) && !clickedPolygons.has(this.id)) revealPolygon(this);
