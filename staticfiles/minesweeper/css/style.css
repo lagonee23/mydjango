@@ -51,7 +51,7 @@ display: none; /* 숨김 처리 */
 
 @font-face {
     font-family: 'DigitNum'; /* 폰트 이름을 지정 */
-    src: url('/static/minesweeper/fonts/DS-DIGI.ttf') format('truetype'); /* TTF 파일 위치 */
+    src: url('/static/minesweeper/fonts/DS-DIGI.TTF') format('truetype'); /* TTF 파일 위치 */
     font-weight: normal;
     font-style: normal;
 }
