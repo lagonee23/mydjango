@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'My-djagno-app-env.eba-xh3tkh2p.ap-northeast-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'My-django-app-env.eba-3pdmhemm.ap-northeast-2.elasticbeanstalk.com']
 
 
 # Application definition
